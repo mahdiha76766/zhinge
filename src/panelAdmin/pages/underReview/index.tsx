@@ -15,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 import UseConfirmedAnnounceQuery from "../../../hooks/queries/admin/confirmedAnnounce/UseConfirmedAnnounceQuery";
 import UseDeletePhotosMutation from "../../../hooks/mutation/deletePhotos/UseDeletePhotosMutation";
 import UseUploadFileMutation from "../../../hooks/mutation/announce/UseUploadFileMutation";
-import axios from "axios";
 
 const UnderReview = () => {
   UseDeletePhotosMutation()
@@ -151,7 +150,7 @@ const UnderReview = () => {
         check: true,
       };
       await updateAnnounMutation.mutateAsync(updatePayload);
-      await verifyAnnounceMutation.mutateAsync();
+      await verifyAnnounceMutation.mutateAsync({ Uid: item.Uid });
       refetchInprogress();
       refetchChecked();
       setEditModalOpen(false);
@@ -163,7 +162,7 @@ const UnderReview = () => {
 
   const inprogressTableData =
     inprogressData?.inprogress
-      ?.filter((item: any) => !item.reject) // Remove items with "رد شده" status
+      ?.filter((item: any) => !item.reject) 
       .slice()
       .reverse()
       .map((item: any, idx: number) => ({
